@@ -9,22 +9,22 @@ Each specialization can use a different spell so melee, ranged, and healer specs
 
 ## Features
 
-Spec based range detection
+#### Spec based range detection
 Automatically detects your specialization and checks range using a configurable spell.
 
-Custom warning display
+#### Custom warning display
 Choose how the warning appears:
 
-Text with adjustable size and color
+#### Text with adjustable size and color
 Icon using UI textures - WIP
 
-Movable warning frame
+#### Movable warning frame
 Unlock the warning display and drag it anywhere on screen.
 
-Per spec configuration
+#### Per spec configuration
 Enable or disable specs and select the spell used for the range check.
 
-Lightweight
+#### Lightweight
 Minimal CPU usage with a configurable update interval.
 
 ## Commands
