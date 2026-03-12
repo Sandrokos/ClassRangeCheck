@@ -15,8 +15,8 @@ Automatically detects your specialization and checks range using a configurable 
 #### Custom warning display
 Choose how the warning appears:
 
-#### Text with adjustable size and color
-Icon using UI textures - WIP
+- Text with adjustable size and color
+- Icon using UI textures - WIP
 
 #### Movable warning frame
 Unlock the warning display and drag it anywhere on screen.
