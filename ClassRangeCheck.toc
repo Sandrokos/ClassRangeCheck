@@ -1,0 +1,17 @@
+## Interface: 120000, 120001
+## Title: Class Range Check
+## Notes: Customizable range alerts by specialization
+## Author: Sandrokos
+## Version: 1
+## LoadSavedVariablesFirst: 1
+## SavedVariables: ClassRangeCheckDB1
+
+Libs\LibStub\LibStub.lua
+Libs\CallbackHandler-1.0\CallbackHandler-1.0.xml
+Libs\Ace3\AceAddon-3.0\AceAddon-3.0.xml
+Libs\Ace3\AceConfig-3.0\AceConfig-3.0.xml
+Libs\Ace3\AceConfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
+Libs\Ace3\AceDB-3.0\AceDB-3.0.xml
+Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
+
+core.lua
