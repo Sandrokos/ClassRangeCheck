@@ -14,4 +14,9 @@ Libs\Ace3\AceConfig-3.0\AceConfigDialog-3.0\AceConfigDialog-3.0.xml
 Libs\Ace3\AceDB-3.0\AceDB-3.0.xml
 Libs\LibSharedMedia-3.0\LibSharedMedia-3.0.lua
 
+default.lua
+media.lua
+display.lua
+rangeCheck.lua
+ui.lua
 core.lua
