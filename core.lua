@@ -1,142 +1,157 @@
 local LSM = LibStub("LibSharedMedia-3.0")
 local AceDB = LibStub("AceDB-3.0")
 
-	--------------------------------------------------
-	-- DEFAULT SPELLS (used if player has them)
-	--------------------------------------------------
 
-	local defaultSpells = {
+--------------------------------------------------
+-- MEDIA PATH
+--------------------------------------------------
+local mediaPath = "Interface\\AddOns\\ClassRangeCheck\\Media\\"
 
-		-- Warrior (classID 1)
-		[1] = {
-			[71] = 1464, -- Arms → Slam
-			[72] = 23881, -- Fury → Bloodthirst
-			[73] = 23922 -- Protection → Shield Slam
-		},
+--------------------------------------------------
+-- DEFAULT SPELLS (used if player has them)
+--------------------------------------------------
 
-		-- Paladin (classID 2)
-		[2] = {
-			[65] = 82326, -- Holy → Holy Light
-			[66] = 53600, -- Protection → Shield of the Righteous
-			[70] = 35395 -- Retribution → Crusader Strike
-		},
+local defaultSpells = {
 
-		-- Hunter (classID 3)
-		[3] = {
-			[253] = 217200, -- Beast Mastery → Barbed Shot
-			[254] = 19434, -- Marksmanship → Aimed Shot
-			[255] = 185358 -- Survival → Arcane Shot
-		},
+	-- Warrior (classID 1)
+	[1] = {
+		[71] = 1464, -- Arms → Slam
+		[72] = 23881, -- Fury → Bloodthirst
+		[73] = 23922 -- Protection → Shield Slam
+	},
 
-		-- Rogue (classID 4)
-		[4] = {
-			[259] = 1752, -- Assassination → Sinister Strike
-			[260] = 1752, -- Outlaw → Sinister Strike
-			[261] = 53 -- Subtlety → Backstab
-		},
+	-- Paladin (classID 2)
+	[2] = {
+		[65] = 82326, -- Holy → Holy Light
+		[66] = 53600, -- Protection → Shield of the Righteous
+		[70] = 35395 -- Retribution → Crusader Strike
+	},
 
-		-- Priest (classID 5)
-		[5] = {
-			[256] = 585, -- Discipline → Smite
-			[257] = 585, -- Holy → Smite
-			[258] = 8092 -- Shadow → Mind Blast
-		},
+	-- Hunter (classID 3)
+	[3] = {
+		[253] = 217200, -- Beast Mastery → Barbed Shot
+		[254] = 19434, -- Marksmanship → Aimed Shot
+		[255] = 185358 -- Survival → Arcane Shot
+	},
 
-		-- Death Knight (classID 6)
-		[6] = {
-			[250] = 49998, -- Blood → Death Strike
-			[251] = 49143, -- Frost → Frost Strike
-			[252] = 47541 -- Unholy → Death Coil
-		},
+	-- Rogue (classID 4)
+	[4] = {
+		[259] = 1752, -- Assassination → Sinister Strike
+		[260] = 1752, -- Outlaw → Sinister Strike
+		[261] = 53 -- Subtlety → Backstab
+	},
 
-		-- Shaman (classID 7)
-		[7] = {
-			[262] = 188196, -- Elemental → Lightning Bolt
-			[263] = 17364, -- Enhancement → Stormstrike
-			[264] = 8004 -- Restoration → Healing Surge
-		},
+	-- Priest (classID 5)
+	[5] = {
+		[256] = 585, -- Discipline → Smite
+		[257] = 585, -- Holy → Smite
+		[258] = 8092 -- Shadow → Mind Blast
+	},
 
-		-- Mage (classID 8)
-		[8] = {
-			[62] = 30451, -- Arcane → Arcane Blast
-			[63] = 133, -- Fire → Fireball
-			[64] = 116 -- Frost → Frostbolt
-		},
+	-- Death Knight (classID 6)
+	[6] = {
+		[250] = 49998, -- Blood → Death Strike
+		[251] = 49143, -- Frost → Frost Strike
+		[252] = 47541 -- Unholy → Death Coil
+	},
 
-		-- Warlock (classID 9)
-		[9] = {
-			[265] = 686, -- Affliction → Shadow Bolt
-			[266] = 686, -- Demonology → Shadow Bolt
-			[267] = 116858 -- Destruction → Chaos Bolt
-		},
+	-- Shaman (classID 7)
+	[7] = {
+		[262] = 188196, -- Elemental → Lightning Bolt
+		[263] = 17364, -- Enhancement → Stormstrike
+		[264] = 8004 -- Restoration → Healing Surge
+	},
 
-		-- Monk (classID 10)
-		[10] = {
-			[268] = 100780, -- Brewmaster → Tiger Palm
-			[269] = 100780, -- Windwalker → Tiger Palm
-			[270] = 116670 -- Mistweaver → Vivify
-		},
+	-- Mage (classID 8)
+	[8] = {
+		[62] = 30451, -- Arcane → Arcane Blast
+		[63] = 133, -- Fire → Fireball
+		[64] = 116 -- Frost → Frostbolt
+	},
 
-		-- Druid (classID 11)
-		[11] = {
-			[102] = 5176, -- Balance → Wrath
-			[103] = 1822, -- Feral → Rake
-			[104] = 33917, -- Guardian → Mangle
-			[105] = 8936 -- Restoration → Regrowth
-		},
+	-- Warlock (classID 9)
+	[9] = {
+		[265] = 686, -- Affliction → Shadow Bolt
+		[266] = 686, -- Demonology → Shadow Bolt
+		[267] = 116858 -- Destruction → Chaos Bolt
+	},
 
-		-- Demon Hunter (classID 12)
-		[12] = {
-			[577] = 162243, -- Havoc → Demon Bite
-			[581] = 203782, -- Vengeance → Shear
-			[1480] = 473662 -- Devourer → Consume
-		},
+	-- Monk (classID 10)
+	[10] = {
+		[268] = 100780, -- Brewmaster → Tiger Palm
+		[269] = 100780, -- Windwalker → Tiger Palm
+		[270] = 116670 -- Mistweaver → Vivify
+	},
 
-		-- Evoker (classID 13)
-		[13] = {
-			[1467] = 362969, -- Devastation → Azure Strike
-			[1468] = 362969, -- Preservation → Azure Strike
-			[1473] = 361469 -- Augmentation → Eruption
-		}
+	-- Druid (classID 11)
+	[11] = {
+		[102] = 5176, -- Balance → Wrath
+		[103] = 1822, -- Feral → Rake
+		[104] = 33917, -- Guardian → Mangle
+		[105] = 8936 -- Restoration → Regrowth
+	},
+
+	-- Demon Hunter (classID 12)
+	[12] = {
+		[577] = 162243, -- Havoc → Demon Bite
+		[581] = 203782, -- Vengeance → Shear
+		[1480] = 473662 -- Devourer → Consume
+	},
+
+	-- Evoker (classID 13)
+	[13] = {
+		[1467] = 362969, -- Devastation → Azure Strike
+		[1468] = 362969, -- Preservation → Azure Strike
+		[1473] = 361469 -- Augmentation → Eruption
 	}
+}
 
-	--------------------------------------------------
-	-- DEFAULTS
-	--------------------------------------------------
+--------------------------------------------------
+-- DEFAULTS
+--------------------------------------------------
 
-	local defaults = {
-		profile = {
-			outRangeText = "Out of Range",
+local defaults = {
+	profile = {
+		-- General settings
+		displayMode = "TEXT",
+		testModeEnabled = false,
+		showInCombatOnly = true,
 
-			font = "Friz Quadrata TT",
-			fontSize = 18,
-			textColor = { 1, 0, 0, 1 },
+		-- Text Settings
+		outRangeText = "Out of Range",
+		font = "Friz Quadrata TT",
+		fontSize = 18,
 
-			posX = 0,
-			posY = 0,
+		-- Texture settings
+		textureChoice = "Ring",
+		texturePath = "Interface\\AddOns\\ClassRangeCheck\\Media\\ring.tga",
+		textureSizeX = 20,
+		textureSizeY = 20,
 
-			updateInterval = 0.33,
-			testMode = false,
-			showInCombatOnly = true,
+		-- Shared Settings
+		color = { 1, 0, 0, 1 },
+		posX = 0,
+		posY = 0,
+		updateInterval = 0.33,
 
-			spellDictionary = {}
-		}
+		-- Class/Spec Spells
+		spellDictionary = {}
 	}
+}
 
-	local db = AceDB:New("ClassRangeCheckDB1", defaults, true)
-	if next(db.profile.spellDictionary) == nil then
-		for classId, specs in pairs(defaultSpells) do
-			db.profile.spellDictionary[classId] = {}
+local db = AceDB:New("ClassRangeCheckDB1", defaults, true)
+if next(db.profile.spellDictionary) == nil then
+	for classId, specs in pairs(defaultSpells) do
+		db.profile.spellDictionary[classId] = {}
 
-			for specId, spellId in pairs(specs) do
-				db.profile.spellDictionary[classId][specId] = {
-					enabled = true,
-					spellId = spellId
-				}
-			end
+		for specId, spellId in pairs(specs) do
+			db.profile.spellDictionary[classId][specId] = {
+				enabled = true,
+				spellId = spellId
+			}
 		end
 	end
-
+end
 
 --------------------------------------------------
 -- GLOBAL VARIABLES
@@ -146,99 +161,71 @@ local cachedEnabled = nil
 local updateTicker = nil
 local unlockedFrameEnabled = nil
 
+local MediaTextures = {
+    Circle         = "Interface\\AddOns\\ClassRangeCheck\\Media\\circle.tga",
+    Crosshair      = "Interface\\AddOns\\ClassRangeCheck\\Media\\crosshair.tga",
+    Ring         	= "Interface\\AddOns\\ClassRangeCheck\\Media\\ring.tga",
+    Moon       		= "Interface\\AddOns\\ClassRangeCheck\\Media\\moon.tga",
+    DoubleCrescent = "Interface\\AddOns\\ClassRangeCheck\\Media\\double_crescent.tga",
+}
 
-local function BuildClassSpellOptions()
-	local options = {}
-	for classId, specs in pairs(db.profile.spellDictionary) do
-		local className, classTag = GetClassInfo(classId)
-		if not className then
-			className = "Class " .. classId
-			classTag = "class" .. classId
-		end
+local MediaTextureValues = {}
 
-		options[classTag] = {
-			type = "group",
-			name = className,
-			order = classId,
-			args = {}
-		}
-
-		for specId, _ in pairs(specs) do
-			local specName = select(2, GetSpecializationInfoByID(specId)) or ("Spec " .. specId)
-			options[classTag].args["spec" .. specId] = {
-				type = "group",
-				name = specName,
-				inline = true,
-				args = {
-					enabled = {
-						type = "toggle",
-						name = "Enable",
-						get = function()
-							return db.profile.spellDictionary[classId][specId].enabled
-						end,
-						set = function(_, v)
-							db.profile.spellDictionary[classId][specId].enabled = v
-						end
-					},
-					spell = {
-						type = "input",
-						name = "Spell ID",
-						get = function()
-							return tostring(db.profile.spellDictionary[classId][specId].spellId or "")
-						end,
-						set = function(_, v)
-							local id = tonumber(v)
-							if id and C_Spell.GetSpellInfo(id) then
-								db.profile.spellDictionary[classId][specId].spellId = id
-							end
-						end
-					},
-					spellName = {
-						type = "description",
-						name = function()
-							local spellId = db.profile.spellDictionary[classId][specId].spellId
-							local spellInfo = C_Spell.GetSpellInfo(spellId)
-							if spellInfo then
-								return "|T" .. spellInfo.iconID .. ":16|t " .. spellInfo.name
-							else
-								return "Invalid Spell"
-							end
-						end
-					}
-				}
-			}
-		end
-	end
-	return options
+for name, path in pairs(MediaTextures) do
+    local displayName = name:gsub("%.tga$", "")
+    MediaTextureValues[displayName] = "|T" .. path .. ":16:16|t "
 end
-
 
 --------------------------------------------------
 -- DISPLAY
 --------------------------------------------------
 local rangeTextFrame = CreateFrame("Frame", "ClassRangeCheckFrame", UIParent)
+
 local rangeTextFontSettings = rangeTextFrame:CreateFontString(nil, "OVERLAY")
+
+local iconFrame = rangeTextFrame:CreateTexture(nil, "OVERLAY")
+iconFrame:SetPoint("CENTER")
+iconFrame:SetSize(db.profile.textureSizeX, db.profile.textureSizeY) -- default size, will scale later
+iconFrame:Hide()
+
 local highlight = rangeTextFrame:CreateTexture(nil, "BACKGROUND")
 highlight:SetAllPoints(rangeTextFrame)
 highlight:SetColorTexture(1, 1, 0, 0.2)
 highlight:Hide()
 
-local function ApplyFont()
+local function UpdateText()
 	local fontPath = LSM:Fetch("font", db.profile.font)
 		or LSM:Fetch("font", "Friz Quadrata TT")
 	rangeTextFontSettings:SetFont(fontPath, db.profile.fontSize, "OUTLINE")
 
-	local color = db.profile.textColor or { 1, 0, 0, 1 }
+	local color = db.profile.color or { 1, 0, 0, 1 }
 	rangeTextFontSettings:SetTextColor(color[1], color[2], color[3], color[4])
 end
 
-local function InitDisplay()
-	rangeTextFrame:SetSize(240, 60)
-	rangeTextFrame:SetPoint("CENTER", UIParent, "CENTER", db.profile.posX, db.profile.posY)
+local function UpdateTexture()
+	local sizeX = db.profile.textureSizeX or defaults.profile.textureSizeX
+	local sizeY = db.profile.textureSizeY or defaults.profile.textureSizeY
+	iconFrame:SetSize(sizeX, sizeY)
 
-	rangeTextFontSettings:SetPoint("CENTER")
-	ApplyFont()
-	rangeTextFontSettings:SetText(db.profile.outRangeText)
+	local texturePath = db.profile.texturePath or defaults.profile.texturePath
+	iconFrame:SetTexture(texturePath)
+
+	local color = db.profile.color or { 1, 0, 0, 1 }
+	iconFrame:SetVertexColor(color[1], color[2], color[3], color[4])
+end
+
+local function InitDisplay()
+
+		rangeTextFrame:SetSize(240, 60)
+		rangeTextFrame:SetPoint("CENTER", UIParent, "CENTER", db.profile.posX, db.profile.posY)
+
+		rangeTextFontSettings:SetPoint("CENTER")
+		UpdateText()
+		rangeTextFontSettings:SetText(db.profile.outRangeText)
+	
+		iconFrame:SetPoint("CENTER")
+		UpdateTexture()
+
 
 	-- highlight for dragging feedback
 	highlight:SetAllPoints(rangeTextFrame)
@@ -314,37 +301,52 @@ end
 --------------------------------------------------
 -- RANGE CHECK LOGIC
 --------------------------------------------------
+local function ShowOutOfRange()
+	if db.profile.displayMode == "TEXT" then
+		rangeTextFontSettings:SetText(db.profile.outRangeText)
+		iconFrame:Hide()
+	else
+		rangeTextFontSettings:SetText("")
+		iconFrame:Show()
+	end
+end
+
 local function CheckRange()
 	if db.profile.testMode then
-		rangeTextFontSettings:SetText(db.profile.outRangeText)
+		ShowOutOfRange()
 		return
 	end
 
 	if not cachedEnabled then
 		rangeTextFontSettings:SetText("")
+		iconFrame:Hide()
 		return
 	end
 
 	if db.profile.showInCombatOnly and not UnitAffectingCombat("player") then
 		rangeTextFontSettings:SetText("")
+		iconFrame:Hide()
 		return
 	end
 
 	if not UnitExists("target") or not UnitCanAttack("player", "target") then
 		rangeTextFontSettings:SetText("")
+		iconFrame:Hide()
 		return
 	end
 
 	if not cachedSpellId then
 		rangeTextFontSettings:SetText("")
+		iconFrame:Hide()
 		return
 	end
 
 	local inRange = C_Spell.IsSpellInRange(cachedSpellId, "target")
 	if inRange == false then
-		rangeTextFontSettings:SetText(db.profile.outRangeText)
+		ShowOutOfRange()
 	else
 		rangeTextFontSettings:SetText("")
+		iconFrame:Hide()
 	end
 end
 
@@ -399,6 +401,72 @@ lockButton:SetScript("OnClick", function()
 	LockFrame()
 end)
 
+
+local function BuildClassSpellOptions()
+	local options = {}
+	for classId, specs in pairs(db.profile.spellDictionary) do
+		local className, classTag = GetClassInfo(classId)
+		if not className then
+			className = "Class " .. classId
+			classTag = "class" .. classId
+		end
+
+		options[classTag] = {
+			type = "group",
+			name = className,
+			order = classId,
+			args = {}
+		}
+
+		for specId, _ in pairs(specs) do
+			local specName = select(2, GetSpecializationInfoByID(specId)) or ("Spec " .. specId)
+			options[classTag].args["spec" .. specId] = {
+				type = "group",
+				name = specName,
+				inline = true,
+				args = {
+					enabled = {
+						type = "toggle",
+						name = "Enable",
+						get = function()
+							return db.profile.spellDictionary[classId][specId].enabled
+						end,
+						set = function(_, v)
+							db.profile.spellDictionary[classId][specId].enabled = v
+						end
+					},
+					spell = {
+						type = "input",
+						name = "Spell ID",
+						get = function()
+							return tostring(db.profile.spellDictionary[classId][specId].spellId or "")
+						end,
+						set = function(_, v)
+							local id = tonumber(v)
+							if id and C_Spell.GetSpellInfo(id) then
+								db.profile.spellDictionary[classId][specId].spellId = id
+							end
+						end
+					},
+					spellName = {
+						type = "description",
+						name = function()
+							local spellId = db.profile.spellDictionary[classId][specId].spellId
+							local spellInfo = C_Spell.GetSpellInfo(spellId)
+							if spellInfo then
+								return "|T" .. spellInfo.iconID .. ":16|t " .. spellInfo.name
+							else
+								return "Invalid Spell"
+							end
+						end
+					}
+				}
+			}
+		end
+	end
+	return options
+end
+
 local options = {
 	type = "group",
 	name = "Class Range Check",
@@ -443,65 +511,129 @@ local options = {
 						RestartTicker()
 					end,
 					order = 4
-				}
-			}
-		},
-		textSettings = {
-			type = "group",
-			name = "Text",
-			order = 2,
-			args = {
-				text = {
-					type = "input",
-					name = "Out of Range Text",
-					get = function() return db.profile.outRangeText end,
-					set = function(_, v) db.profile.outRangeText = v end
 				},
-				font = {
-					type = "select",
-					dialogControl = "LSM30_Font",
-					name = "Font",
-					values = AceGUIWidgetLSMlists.font,
-					get = function() return db.profile.font end,
-					set = function(_, v)
-						db.profile.font = v
-						ApplyFont()
-					end
-				},
-				fontSize = {
-					type = "range",
-					name = "Font Size",
-					min = 8,
-					max = 60,
-					step = 1,
-					get = function() return db.profile.fontSize end,
-					set = function(_, v)
-						db.profile.fontSize = v
-						ApplyFont()
-					end
-				},
-				textColor = {
+				color = {
 					type = "color",
-					name = "Text Color",
+					name = "Color",
 					get = function()
-						local c = db.profile.textColor
+						local c = db.profile.color
 						return c[1], c[2], c[3], c[4]
 					end,
 					set = function(_, r, g, b, a)
-						db.profile.textColor = { r, g, b, a }
-						ApplyFont()
-					end
+						db.profile.color = { r, g, b, a }
+						UpdateText()
+						UpdateTexture()
+					end,
+					order = 5
+				},
+				displayMode = {
+					type = "select",
+					name = "Display Mode",
+					values =
+					{
+						TEXT = "TEXT",
+						TEXTURE = "TEXTURE"
+					},
+					get = function()
+						return db.profile.displayMode
+					end,
+					set = function(_, v)
+						db.profile.displayMode = v
+						RestartTicker()
+					end,
+					order = 6
 				}
-			}
+			},
 		},
-		classSpells = {
-			type = "group",
-			name = "Class Configs",
-			order = 4,
-			args = BuildClassSpellOptions()
+			textSettings = {
+				type = "group",
+				name = "Text",
+				order = 2,
+				hidden = function() return db.profile.displayMode ~= "TEXT" end,
+				args = {
+					text = {
+						type = "input",
+						name = "Out of Range Text",
+						get = function() return db.profile.outRangeText end,
+						set = function(_, v) db.profile.outRangeText = v end
+					},
+					font = {
+						type = "select",
+						dialogControl = "LSM30_Font",
+						name = "Font",
+						values = AceGUIWidgetLSMlists.font,
+						get = function() return db.profile.font end,
+						set = function(_, v)
+							db.profile.font = v
+							UpdateText()
+						end
+					},
+					fontSize = {
+						type = "range",
+						name = "Font Size",
+						min = 8,
+						max = 60,
+						step = 1,
+						get = function() return db.profile.fontSize end,
+						set = function(_, v)
+							db.profile.fontSize = v
+							UpdateText()
+						end
+					},
+				}
+			},
+			textureSettings = {
+				type = "group",
+				name = "Texture",
+				order = 3,
+				hidden = function() return db.profile.displayMode ~= "TEXTURE" end,
+				args = {
+					texture = {
+						type = "select",
+						name = "Texture",
+						values = MediaTextureValues,
+						get = function() return db.profile.textureChoice end,
+						set = function(_, v) 
+							db.profile.textureChoice = v
+							db.profile.texturePath = MediaTextures[v]
+							UpdateTexture() end
+					},
+					textureSizeX = {
+						type = "range",
+						name = "Texture Size X",
+						min = 10,
+						max = 500,
+						step = 10,
+						get = function() return db.profile.textureSizeX end,
+						set = function(_, v)
+							db.profile.textureSizeX = v
+							UpdateTexture()
+						end
+					},
+					textureSizeY = {
+						type = "range",
+						name = "Texture Size Y",
+						min = 10,
+						max = 500,
+						step = 10,
+						get = function() return db.profile.textureSizeY end,
+						set = function(_, v)
+							db.profile.textureSizeY = v
+							UpdateTexture()
+						end
+					},
+				}
+			},
+			classSpells = {
+				type = "group",
+				name = "Class Configs",
+				order = 4,
+				args = BuildClassSpellOptions()
+			}
 		}
 	}
-}
+
+
 
 AceConfig:RegisterOptionsTable("ClassRangeCheck", options)
 
@@ -531,12 +663,12 @@ SLASH_CRC1 = "/crc"
 SLASH_CRC2 = "/classrangecheck"
 
 SlashCmdList["CRC"] = function(msg)
-    msg = msg:lower():trim()
-    if msg == "reset" then
-        -- Reset profile to defaults
-        db:ResetProfile()
-        ReloadUI()
-    else
+	msg = msg:lower():trim()
+	if msg == "reset" then
+		-- Reset profile to defaults
+		db:ResetProfile()
+		ReloadUI()
+	else
 		AceConfigDialog:Open("ClassRangeCheck")
 		-- Use OnHide of the actual options panel
 		local aceFrame = AceConfigDialog.OpenFrames and AceConfigDialog.OpenFrames["ClassRangeCheck"]
@@ -549,4 +681,3 @@ SlashCmdList["CRC"] = function(msg)
 		end
 	end
 end
-

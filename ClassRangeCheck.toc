@@ -2,7 +2,7 @@
 ## Title: Class Range Check
 ## Notes: Customizable range alerts by specialization
 ## Author: Sandrokos
-## Version: 1
+## Version: 1.1
 ## LoadSavedVariablesFirst: 1
 ## SavedVariables: ClassRangeCheckDB1
 
