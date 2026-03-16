@@ -116,10 +116,10 @@ local defaults = {
 		fontSize = 18,
 
 		-- Texture settings
-		textureChoice = "Ring",
-		texturePath = "Interface\\AddOns\\ClassRangeCheck\\Media\\ring.tga",
-		textureSizeX = 20,
-		textureSizeY = 20,
+		textureChoice = "DoubleCrescent",
+		texturePath = "Interface\\AddOns\\ClassRangeCheck\\Media\\double_crescent.tga",
+		textureSizeX = 120,
+		textureSizeY = 120,
 
 		-- Shared Settings
 		color = { 1, 0, 0, 1 },
