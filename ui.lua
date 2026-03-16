@@ -13,7 +13,11 @@ function CRC:UnlockFrame()
     self.db.profile.testMode = true
     self.frame:EnableMouse(true)
     self.frame:SetMovable(true)
-
+    if(self.db.profile.displayMode == "TEXT") then
+        self.frame.text:Show()
+    else
+        self.frame.icon:Show()
+    end
     self.frame.highlight:Show()
     self.moveFrame:Show()
 end
@@ -22,6 +26,8 @@ function CRC:LockFrame()
     self.db.profile.testMode = false
     self.frame:EnableMouse(false)
     self.frame:SetMovable(false)
+    self.frame.text:Hide()
+    self.frame.icon:Hide()
 
     self.globals.unlockedFrameEnabled = false
 

@@ -4,7 +4,6 @@ local _, CRC = ...
 -- DISPLAY
 --------------------------------------------------
 local frame = CreateFrame("Frame", "ClassRangeCheckFrame", UIParent)
-CRC.frame = frame
 
 local moveFrame = CreateFrame("Frame", nil, UIParent, "BackdropTemplate")
 CRC.moveFrame = moveFrame
@@ -12,28 +11,16 @@ CRC.moveFrame = moveFrame
 frame:SetSize(240,60)
 frame:SetPoint("CENTER")
 
--- initialize frame drag scripts
-frame:RegisterForDrag("LeftButton")
-frame:SetScript("OnDragStart", function(self)
-	if self.db.profile.testMode then self:StartMoving() end
-end)
-frame:SetScript("OnDragStop", function(self)
-	if self.db.profile.testMode then
-		self:StopMovingOrSizing()
-		local x, y = self:GetCenter()
-		local ux, uy = UIParent:GetCenter()
-		self.db.profile.posX = x - ux
-		self.db.profile.posY = y - uy
-	end
-end)
-
 frame.text = frame:CreateFontString(nil,"OVERLAY")
 frame.text:SetPoint("CENTER")
+
 
 frame.icon = frame:CreateTexture(nil,"OVERLAY")
 frame.icon:SetPoint("CENTER")
 
+
 frame.highlight = frame:CreateTexture(nil, "BACKGROUND")
+
 
 moveFrame.text = moveFrame:CreateFontString(nil, "OVERLAY", "GameFontNormalLarge")
 local resetButton = CreateFrame("Button", nil, moveFrame, "UIPanelButtonTemplate")
@@ -41,6 +28,22 @@ CRC.resetButton = resetButton
 
 local lockButton = CreateFrame("Button", nil, moveFrame, "UIPanelButtonTemplate")
 CRC.lockButton = lockButton
+
+frame:RegisterForDrag("LeftButton")
+frame:SetScript("OnDragStart", function(self)
+        if CRC.db.profile.testMode then self:StartMoving() end
+    end)
+frame:SetScript("OnDragStop", function(self)
+    if CRC.db.profile.testMode then
+        self:StopMovingOrSizing()
+        local x, y = self:GetCenter()
+        local ux, uy = UIParent:GetCenter()
+        CRC.db.profile.posX = x - ux
+        CRC.db.profile.posY = y - uy
+    end
+end)
+
+CRC.frame = frame
 
 function CRC:UpdateText()
 	local db = self.db.profile
@@ -60,19 +63,22 @@ end
 
 function CRC:InitDisplay()
     local db = self.db.profile
+    self.frame:SetPoint("CENTER", UIParent, "CENTER", db.posX, db.posY)
+
     self.frame.text:SetSize(240, 60)
-    self.frame.text:SetPoint("CENTER", UIParent, "CENTER", db.posX, db.posY)
+    self.frame.text:SetPoint("CENTER", self.frame, "CENTER")
     CRC:UpdateText()
     self.frame.text:SetText(db.outRangeText)
     self.frame.text:Hide()
 
-    self.frame.icon:SetPoint("CENTER")
+    self.frame.icon:SetPoint("CENTER", self.frame, "CENTER")
     CRC:UpdateTexture()
     self.frame.icon:Hide()
 
 	self.frame.highlight:SetAllPoints(self.frame)
 	self.frame.highlight:SetColorTexture(1, 1, 0, 0.2)
 	self.frame.highlight:Hide()
+    
 end
 
 -- MINI FRAME for drag options
@@ -90,7 +96,6 @@ function CRC:InitMoveFrame()
     self.moveFrame.text:SetPoint("TOP", 0, -10)
     self.moveFrame.text:SetText("Move Range Text")
 
-    
     self.resetButton:SetSize(120, 26)
     self.resetButton:SetPoint("CENTER", 0, 10)
     self.resetButton:SetText("Reset to Default")
@@ -98,7 +103,7 @@ function CRC:InitMoveFrame()
         self.db.profile.posX = 0
         self.db.profile.posY = 0
         self.frame:ClearAllPoints()
-        self.frame.text:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+        self.frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
     end)
 
     self.lockButton:SetSize(120, 26)
